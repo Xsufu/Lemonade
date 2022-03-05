@@ -15,6 +15,7 @@
  */
 package com.example.lemonade
 
+import android.graphics.drawable.Drawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageView
@@ -96,20 +97,22 @@ class MainActivity : AppCompatActivity() {
             lemonadeState = SQUEEZE
             lemonSize = lemonTree.pick()
             squeezeCount = 0
+            setViewElements()
         } else if (lemonadeState == SQUEEZE) {
             squeezeCount++
             lemonSize--
             if (lemonSize == 0){
                 lemonadeState = DRINK
                 lemonSize = -1
+                setViewElements()
             } else lemonadeState = SQUEEZE
         } else if (lemonadeState == DRINK) {
             lemonadeState = RESTART
+            setViewElements()
         } else if (lemonadeState == RESTART){
             lemonadeState = SELECT
+            setViewElements()
         }
-
-        setViewElements()
     }
 
     /**
@@ -117,14 +120,22 @@ class MainActivity : AppCompatActivity() {
      */
     private fun setViewElements() {
         val textAction: TextView = findViewById(R.id.text_action)
-        // TODO: set up a conditional that tracks the lemonadeState
+        var drawableResource = R.drawable.lemon_tree
 
-        // TODO: for each state, the textAction TextView should be set to the corresponding string from
-        //  the string resources file. The strings are named to match the state
-
-        // TODO: Additionally, for each state, the lemonImage should be set to the corresponding
-        //  drawable from the drawable resources. The drawables have the same names as the strings
-        //  but remember that they are drawables, not strings.
+        if (lemonadeState == SELECT) {
+            textAction.text = "Нажмите, чтобы собрать лимон"
+            drawableResource = R.drawable.lemon_tree
+        } else if (lemonadeState == SQUEEZE) {
+            textAction.text = "Нажмите, чтобы отжать лимон"
+            drawableResource = R.drawable.lemon_squeeze
+        } else if (lemonadeState == DRINK) {
+            textAction.text = "Нажмите, чтобы выпить свой лимонад"
+            drawableResource = R.drawable.lemon_drink
+        } else if (lemonadeState == RESTART) {
+            textAction.text = "Нажмите, чтобы начать снова"
+            drawableResource = R.drawable.lemon_restart
+        }
+        lemonImage!!.setImageResource(drawableResource)
     }
 
     /**
